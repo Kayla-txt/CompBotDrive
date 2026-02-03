@@ -144,13 +144,11 @@ void pre_auton(void) {
 }
 
 void autonomous(void) {
-  /*if(auton == 0){
-    autonNothing();
-  } else if(auton == 1){
+  /*if(auton == 1){
     autonRight();
   } else if(auton == 2){
     autonLeft();
-  } else if(auton == 3){
+  } else {
     autonNothing();
   }*/
 
