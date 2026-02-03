@@ -21,16 +21,19 @@ motor output2 = motor(PORT7, false);
 motor output3 = motor(PORT1, true);
 
 inertial Inertial = inertial(PORT2);
+//bump sensor
 bumper Bump = bumper(Brain.ThreeWirePort.D);
+//descorer
 pneumatics digout = pneumatics(Brain.ThreeWirePort.A);
-
 
 controller Controller = controller();
 
+//integer for controlling which autonomous runs
 int auton = 0;
 
 //-------------------------------------------------------HELPER METHODS--------------------------------------------------------------------------
 
+//function for turning with inertial sensor
 void wheee(double degrees){
   Inertial.resetHeading();
   drive.stop();
@@ -47,6 +50,7 @@ void wheee(double degrees){
   drive.stop();
 }
 
+//if bump sensor pressed, robot stops
 void bump(){
   while(true){
     drive.drive(forward);
@@ -57,16 +61,19 @@ void bump(){
   }
 }
 
+//pulls in the descorer
 void pneumaticIn(){
   digout.set(false);
   Controller.Screen.print("set");
 }
 
+//extends the descorer
 void pneumaticOut(){
   digout.set(true);
   Controller.Screen.print("set2");
 }
 
+//sets the auton integer based on button pressed on screen
 void autonPicker(){
   if(Brain.Screen.xPosition() < 240 && Brain.Screen.yPosition() < 120){
     auton = 1;
@@ -80,6 +87,7 @@ void autonPicker(){
 //-----------------------------------------------------AUTONOMOUS PROGRAMS-------------------------------------------------------------------
 void autonRight(){
 
+  //sets the intake velocity to intake scoring objects and spins intake
   output1.setVelocity(55, pct);
   output2.setVelocity(55, pct);
   output3.setVelocity(55, pct);
@@ -88,11 +96,15 @@ void autonRight(){
   output2.spin(forward);
   output3.spin(forward);
 
+  //drive forward from parking zone to intake three objects
   drive.driveFor(forward, 37, inches);
+  //turns towards goal
   drive.turnFor(left, 40, degrees);
 
+  //drive towards center bottom goal
   drive.driveFor(forward, 10, inches);
 
+  //scores scoring objects
   output1.setVelocity(-50, pct);
   output2.setVelocity(-50, pct);
   output3.setVelocity(-50, pct);
@@ -101,6 +113,7 @@ void autonRight(){
 
 void autonLeft(){
 
+  //sets the intake velocity to intake scoring objects and spins intake
   output1.setVelocity(55, pct);
   output2.setVelocity(55, pct);
   output3.setVelocity(55, pct);
@@ -109,23 +122,29 @@ void autonLeft(){
   output2.spin(forward);
   output3.spin(forward);
 
+  //drives forward from parking zone to intake three objects
   drive.driveFor(forward, 37, inches);
   drive.turnFor(right, 40, degrees);
 
+  //drives towards center top goal
   drive.driveFor(forward, 12, inches);
   drive.driveFor(reverse, 1, inches);
 
+  //scores scoring objects*
+  //*disclaimer: has never actually worked
   output1.setVelocity(50, pct);
   output2.setVelocity(-50, pct);
   output3.setVelocity(50, pct);
 }
 
+//drives forward three inches
 void autonNothing(){
   drive.driveFor(forward, 3, inches);
 }
 
 //--------------------------------------------------------COMPETITION CODE-----------------------------------------------------------------
 
+//so far useless code for creating buttons
 void pre_auton(void) {
   /*Inertial.calibrate();
 
@@ -165,6 +184,7 @@ void usercontrol(void) {
   output3.setVelocity(0, pct);
 
   while (1) {
+    //code for the drivetrain
     int32_t rightMotor = (Controller.Axis3.position() - Controller.Axis1.position()) * 0.75;
     int32_t leftMotor = (Controller.Axis3.position() + Controller.Axis1.position()) * 0.75;
 
@@ -175,14 +195,17 @@ void usercontrol(void) {
     output2.spin(forward);
     output3.spin(forward);
 
+    //intakes objects or scores in top goal
     if(Controller.ButtonR2.pressing()){
       output1.setVelocity(100, pct);
       output2.setVelocity(100, pct);
       output3.setVelocity(100, pct);
+    //scores in middle goal
     } else if(Controller.ButtonR1.pressing()){
       output1.setVelocity(100, pct);
       output2.setVelocity(-100, pct);
       output3.setVelocity(100, pct);
+    //scores in bottom goal
     } else if(Controller.ButtonL2.pressing()){
       output1.setVelocity(-100, pct);
       output2.setVelocity(-100, pct);
@@ -197,6 +220,7 @@ void usercontrol(void) {
       output3.setVelocity(0, pct);
     }
 
+    //penumatic controllers
     Controller.ButtonA.pressed(pneumaticIn);
     Controller.ButtonB.pressed(pneumaticOut);
   }
