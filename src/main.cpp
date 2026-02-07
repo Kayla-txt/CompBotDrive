@@ -221,8 +221,8 @@ void usercontrol(void) {
     }
 
     //penumatic controllers
-    Controller.ButtonA.pressed(pneumaticIn);
-    Controller.ButtonB.pressed(pneumaticOut);
+    Controller.ButtonA.pressed(pneumaticOut);
+    Controller.ButtonA.released(pneumaticIn);
   }
 
   wait(20, msec); 
