@@ -63,14 +63,12 @@ void bump(){
 
 //pulls in the descorer
 void pneumaticIn(){
-  digout.set(false);
-  Controller.Screen.print("set");
+  digout.set(true);
 }
 
 //extends the descorer
 void pneumaticOut(){
-  digout.set(true);
-  Controller.Screen.print("set2");
+  digout.set(false);
 }
 
 //sets the auton integer based on button pressed on screen
@@ -87,18 +85,18 @@ void autonPicker(){
 //-----------------------------------------------------AUTONOMOUS PROGRAMS-------------------------------------------------------------------
 void autonRight(){
 
-  //sets the intake velocity to intake scoring objects and spins intake
-  output1.setVelocity(55, pct);
-  output2.setVelocity(55, pct);
-  output3.setVelocity(55, pct);
 
+  //drive forward from parking zone to intake three objects
+  drive.driveFor(forward, 29, inches);
   output1.spin(forward);
   output2.spin(forward);
   output3.spin(forward);
-
-  //drive forward from parking zone to intake three objects
-  drive.driveFor(forward, 37, inches);
+  drive.driveFor(forward, 7, inches);
   //turns towards goal
+  output1.stop();
+  output2.stop();
+  output3.stop();
+
   drive.turnFor(left, 40, degrees);
 
   //drive towards center bottom goal
@@ -114,9 +112,7 @@ void autonRight(){
 void autonLeft(){
 
   //sets the intake velocity to intake scoring objects and spins intake
-  output1.setVelocity(55, pct);
-  output2.setVelocity(55, pct);
-  output3.setVelocity(55, pct);
+
 
   output1.spin(forward);
   output2.spin(forward);
@@ -146,7 +142,8 @@ void autonNothing(){
 
 //so far useless code for creating buttons
 void pre_auton(void) {
-  /*Inertial.calibrate();
+  /*
+  Inertial.calibrate();
 
   Brain.Screen.setFillColor(red);
   Brain.Screen.drawRectangle(0, 0, 240, 120);
@@ -171,8 +168,10 @@ void autonomous(void) {
   } else {
     autonNothing();
   }*/
-
-  autonRight();
+  output1.setVelocity(27.5, pct);
+  output2.setVelocity(27.5, pct);
+  output3.setVelocity(27.5, pct);
+  autonLeft();
 }
 
 void usercontrol(void) {
@@ -185,8 +184,8 @@ void usercontrol(void) {
 
   while (1) {
     //code for the drivetrain
-    int32_t rightMotor = (Controller.Axis3.position() - Controller.Axis1.position()) * 0.75;
-    int32_t leftMotor = (Controller.Axis3.position() + Controller.Axis1.position()) * 0.75;
+    int32_t rightMotor = (Controller.Axis3.position() - Controller.Axis1.position()) * 0.8;
+    int32_t leftMotor = (Controller.Axis3.position() + Controller.Axis1.position()) * 0.8;
 
     rightDrive.spin(forward, rightMotor, pct);
     leftDrive.spin(forward, leftMotor, pct);
@@ -202,14 +201,14 @@ void usercontrol(void) {
       output3.setVelocity(100, pct);
     //scores in middle goal
     } else if(Controller.ButtonR1.pressing()){
-      output1.setVelocity(100, pct);
-      output2.setVelocity(-100, pct);
-      output3.setVelocity(100, pct);
+      output1.setVelocity(85, pct);
+      output2.setVelocity(-85, pct);
+      output3.setVelocity(85, pct);
     //scores in bottom goal
     } else if(Controller.ButtonL2.pressing()){
-      output1.setVelocity(-100, pct);
-      output2.setVelocity(-100, pct);
-      output3.setVelocity(-100, pct);
+      output1.setVelocity(-80, pct);
+      output2.setVelocity(-80, pct);
+      output3.setVelocity(-80, pct);
     } else if(Controller.ButtonL1.pressing()){
       output1.setVelocity(50, pct);
       output2.setVelocity(0, pct);
@@ -223,6 +222,7 @@ void usercontrol(void) {
     //penumatic controllers
     Controller.ButtonA.pressed(pneumaticOut);
     Controller.ButtonA.released(pneumaticIn);
+    Controller.ButtonX.pressed(pneumaticIn);
   }
 
   wait(20, msec); 
