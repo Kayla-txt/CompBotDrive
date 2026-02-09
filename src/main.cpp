@@ -18,7 +18,7 @@ motor output1 = motor(PORT5, false);
 //top intake
 motor output2 = motor(PORT7, false);
 //side intake
-motor output3 = motor(PORT1, true);
+motor output3 = motor(PORT4, true);
 
 inertial Inertial = inertial(PORT2);
 //bump sensor
