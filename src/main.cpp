@@ -87,11 +87,11 @@ void autonRight(){
 
 
   //drive forward from parking zone to intake three objects
-  drive.driveFor(forward, 29, inches);
+  drive.driveFor(forward, 25, inches);
   output1.spin(forward);
   output2.spin(forward);
   output3.spin(forward);
-  drive.driveFor(forward, 7, inches);
+  drive.driveFor(forward, 11, inches);
   //turns towards goal
   output1.stop();
   output2.stop();
