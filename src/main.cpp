@@ -12,9 +12,13 @@ brain Brain;
 
 // left motors from front to back
 motor lD1 = motor(PORT12, false);
+// motor lD2 = motor(PORTXX, false);
+// motor lD3 = motor(PORTXX, false);
 
 // right motors from front to back
 motor rD1 = motor(PORT11, true);
+// motor rD2 = motor(PORTXX, true);
+// motor rD3 = motor(PORTXX, true);
 
 // create a motorgroup for both left and right sides of the drivetrain,
 // as we might expand motor count to three on each side in the future
