@@ -197,8 +197,8 @@ void usercontrol(void) {
 
   while (1) {
     //code for the drivetrain
-    int32_t rightMotor = (Controller.Axis3.position() - Controller.Axis1.position()) * 0.8;
-    int32_t leftMotor = (Controller.Axis3.position() + Controller.Axis1.position()) * 0.8;
+    int32_t rightMotor = (Controller.Axis3.position() - Controller.Axis1.position()) * 0.95;
+    int32_t leftMotor = (Controller.Axis3.position() + Controller.Axis1.position()) * 0.95;
 
     rightDrive.spin(forward, rightMotor, pct);
     leftDrive.spin(forward, leftMotor, pct);
