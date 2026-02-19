@@ -9,21 +9,20 @@ competition Competition;
 
 brain Brain;
 
-
 // left motors from front to back
 motor lD1 = motor(PORT12, false);
-// motor lD2 = motor(PORTXX, false);
-// motor lD3 = motor(PORTXX, false);
+motor lD2 = motor(PORT14, false);
+motor lD3 = motor(PORT1, false);
 
 // right motors from front to back
-motor rD1 = motor(PORT11, true);
-// motor rD2 = motor(PORTXX, true);
-// motor rD3 = motor(PORTXX, true);
+motor rD1 = motor(PORT6, true);
+motor rD2 = motor(PORT11, true);
+motor rD3 = motor(PORT20, true);
 
 // create a motorgroup for both left and right sides of the drivetrain,
 // as we might expand motor count to three on each side in the future
-motor_group leftDrive = motor_group(lD1);
-motor_group rightDrive = motor_group(rD1);
+motor_group leftDrive = motor_group(lD1, lD2, lD3);
+motor_group rightDrive = motor_group(rD1, rD2, rD3);
 
 drivetrain drive = drivetrain(leftDrive, rightDrive, 320, 320, 130, mm, 1);
 
