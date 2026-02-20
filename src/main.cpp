@@ -24,7 +24,7 @@ motor rD3 = motor(PORT20, true);
 motor_group leftDrive = motor_group(lD1, lD2, lD3);
 motor_group rightDrive = motor_group(rD1, rD2, rD3);
 
-drivetrain drive = drivetrain(leftDrive, rightDrive, 320, 320, 130, mm, 1);
+drivetrain drive = drivetrain(leftDrive, rightDrive, 320, 301, 201, mm, 3);
 
 //bottom intake
 motor output1 = motor(PORT5, false);
