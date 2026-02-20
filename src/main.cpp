@@ -33,9 +33,6 @@ motor output2 = motor(PORT7, false);
 //side intake
 motor output3 = motor(PORT4, true);
 
-inertial Inertial = inertial(PORT2);
-//bump sensor
-bumper Bump = bumper(Brain.ThreeWirePort.D);
 //descorer
 pneumatics digout = pneumatics(Brain.ThreeWirePort.A);
 
@@ -48,30 +45,12 @@ int auton = 0;
 
 //function for turning with inertial sensor
 void wheee(double degrees){
-  Inertial.resetHeading();
-  drive.stop();
-
-  while(true){
-    Brain.Screen.setCursor(0, 0);
-    Brain.Screen.print(Inertial.heading());
-    drive.turn(right);
-    if(Inertial.heading() >= degrees){
-      break;
-    }
-  }
-
-  drive.stop();
+  // lost sensors :(
 }
 
 //if bump sensor pressed, robot stops
 void bump(){
-  while(true){
-    drive.drive(forward);
-    if(Bump.pressing()){
-      drive.stop();
-      break;
-    }
-  }
+  // lost more sensors :(
 }
 
 //pulls in the descorer
