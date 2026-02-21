@@ -34,12 +34,15 @@ motor output2 = motor(PORT7, false);
 motor output3 = motor(PORT4, true);
 
 //descorer
-pneumatics digout = pneumatics(Brain.ThreeWirePort.A);
+pneumatics digout = pneumatics(Brain.ThreeWirePort.C);
+
+pneumatics matchload = pneumatics(Brain.ThreeWirePort.B);
 
 controller Controller = controller();
 
 //integer for controlling which autonomous runs
-int auton = 0;
+bool descorer = false;
+bool matchLoader = false;
 
 //-------------------------------------------------------HELPER METHODS--------------------------------------------------------------------------
 
@@ -54,17 +57,19 @@ void bump(){
 }
 
 //pulls in the descorer
-void pneumaticIn(){
-  digout.set(true);
+void descore(){
+  descorer = !descorer;
+  digout.set(descorer);
 }
 
-//extends the descorer
-void pneumaticOut(){
-  digout.set(false);
+//toggles matchloader
+void matchLoad(){
+  matchLoader = !matchLoader;
+  matchload.set(matchLoader);
 }
 
 //sets the auton integer based on button pressed on screen
-void autonPicker(){
+/*void autonPicker(){
   if(Brain.Screen.xPosition() < 240 && Brain.Screen.yPosition() < 120){
     auton = 1;
   } else if(Brain.Screen.yPosition() < 120){
@@ -72,7 +77,7 @@ void autonPicker(){
   } else if(Brain.Screen.xPosition() > 240){
     auton = 3;
   }
-}
+}*/
 
 //-----------------------------------------------------AUTONOMOUS PROGRAMS-------------------------------------------------------------------
 void autonRight(){
@@ -218,9 +223,9 @@ void usercontrol(void) {
     }
 
     //penumatic controllers
-    Controller.ButtonA.pressed(pneumaticOut);
-    Controller.ButtonA.released(pneumaticIn);
-    Controller.ButtonX.pressed(pneumaticIn);
+    Controller.ButtonA.pressed(descore);
+    Controller.ButtonX.pressed(matchLoad);
+
   }
 
   wait(20, msec); 
