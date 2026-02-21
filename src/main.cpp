@@ -10,21 +10,21 @@ competition Competition;
 brain Brain;
 
 // left motors from front to back
-motor lD1 = motor(PORT12, false);
-motor lD2 = motor(PORT14, false);
-motor lD3 = motor(PORT1, false);
+motor lD1 = motor(PORT12, true);
+motor lD2 = motor(PORT14, true);
+motor lD3 = motor(PORT1, true);
 
 // right motors from front to back
-motor rD1 = motor(PORT6, true);
-motor rD2 = motor(PORT11, true);
-motor rD3 = motor(PORT20, true);
+motor rD1 = motor(PORT6, false);
+motor rD2 = motor(PORT11, false);
+motor rD3 = motor(PORT20, false);
 
 // create a motorgroup for both left and right sides of the drivetrain,
 // as we might expand motor count to three on each side in the future
 motor_group leftDrive = motor_group(lD1, lD2, lD3);
 motor_group rightDrive = motor_group(rD1, rD2, rD3);
 
-drivetrain drive = drivetrain(leftDrive, rightDrive, 320, 301, 201, mm, 3);
+drivetrain drive = drivetrain(leftDrive, rightDrive, 320, 301, 201, mm, 60/36);
 
 //bottom intake
 motor output1 = motor(PORT5, false);
@@ -79,7 +79,7 @@ void autonRight(){
 
 
   //drive forward from parking zone to intake three objects
-  drive.driveFor(forward, 25, inches);
+  drive.driveFor(forward, 20, inches);
   output1.spin(forward);
   output2.spin(forward);
   output3.spin(forward);
@@ -89,40 +89,46 @@ void autonRight(){
   output2.stop();
   output3.stop();
 
-  drive.turnFor(left, 40, degrees);
+  drive.turnFor(left, 30, degrees);
 
   //drive towards center bottom goal
-  drive.driveFor(forward, 10, inches);
+  drive.driveFor(forward, 7, inches);
 
   //scores scoring objects
   output1.setVelocity(-50, pct);
   output2.setVelocity(-50, pct);
   output3.setVelocity(-50, pct);
-
+  output1.spin(forward);
+  output2.spin(forward);
+  output3.spin(forward);
 }
 
 void autonLeft(){
 
   //sets the intake velocity to intake scoring objects and spins intake
-
-
+  drive.driveFor(forward, 20, inches);
   output1.spin(forward);
   output2.spin(forward);
   output3.spin(forward);
+  drive.driveFor(forward, 11, inches);
+  //turns towards goal
+  output1.stop();
+  output2.stop();
+  output3.stop();
+  
+  drive.turnFor(right, 30, degrees);
 
-  //drives forward from parking zone to intake three objects
-  drive.driveFor(forward, 37, inches);
-  drive.turnFor(right, 40, degrees);
-
-  //drives towards center top goal
-  drive.driveFor(forward, 12, inches);
-  drive.driveFor(reverse, 1, inches);
+  //drive towards center bottom goal
+  drive.driveFor(forward, 7, inches);
 
   //scores scoring objects*
   //*disclaimer: has never actually worked
   output1.setVelocity(50, pct);
   output2.setVelocity(-50, pct);
   output3.setVelocity(50, pct);
+  output1.spin(forward);
+  output2.spin(forward);
+  output3.spin(forward);
 }
 
 //drives forward three inches
@@ -163,7 +169,7 @@ void autonomous(void) {
   output1.setVelocity(27.5, pct);
   output2.setVelocity(27.5, pct);
   output3.setVelocity(27.5, pct);
-  autonLeft();
+  autonRight();
 }
 
 void usercontrol(void) {
@@ -176,8 +182,8 @@ void usercontrol(void) {
 
   while (1) {
     //code for the drivetrain
-    int32_t rightMotor = (Controller.Axis3.position() - Controller.Axis1.position()) * 0.95;
-    int32_t leftMotor = (Controller.Axis3.position() + Controller.Axis1.position()) * 0.95;
+    int32_t rightMotor = (Controller.Axis3.position() - (Controller.Axis1.position() * 0.8)) * 0.95;
+    int32_t leftMotor = (Controller.Axis3.position() + (Controller.Axis1.position() * 0.8)) * 0.95;
 
     rightDrive.spin(forward, rightMotor, pct);
     leftDrive.spin(forward, leftMotor, pct);
