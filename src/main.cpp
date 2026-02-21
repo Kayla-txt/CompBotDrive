@@ -147,20 +147,20 @@ void autonSkills(){
   //code for skills goes here
 }
 
-void accelerator(int RightMotor, int LeftMotor) {
+void accelerator(int RightMotor, int LeftMotor, int &currentRight, int &currentLeft) {
   if (abs(RightMotor - currentRight) < 1){
     currentRight = RightMotor;
   } else if (RightMotor > currentRight) {
-    currentRight += 0.5;
+    currentRight += 1;
   } else if (RightMotor < currentRight) {
-    currentRight -= 0.5;
+    currentRight -= 1;
   }
   if (abs(LeftMotor - currentLeft) < 1){
     currentLeft = LeftMotor;
   } else if (LeftMotor > currentLeft) {
-    currentLeft += 0.5;
+    currentLeft += 1;
   } else if (LeftMotor < currentLeft) {
-    currentLeft -= 0.5;
+    currentLeft -= 1;
   }
   
 }
@@ -198,7 +198,7 @@ void autonomous(void) {
   output1.setVelocity(27.5, pct);
   output2.setVelocity(27.5, pct);
   output3.setVelocity(27.5, pct);
-  autonNothing();
+  autonLeft();
 }
 
 void usercontrol(void) {
@@ -216,8 +216,9 @@ void usercontrol(void) {
     int32_t leftMotor = (Controller.Axis3.position() + (Controller.Axis1.position() * 0.8)) * 0.8;
     
 
-    accelerator(rightMotor, leftMotor);
-    counter++;
+    accelerator(rightMotor, leftMotor, currentRight, currentLeft);
+    leftDrive.spin(forward, currentLeft, pct);
+    rightDrive.spin(forward, currentRight, pct);
     output1.spin(forward);
     output2.spin(forward);
     output3.spin(forward);
