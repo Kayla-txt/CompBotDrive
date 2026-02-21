@@ -215,12 +215,8 @@ void usercontrol(void) {
     int32_t rightMotor = (Controller.Axis3.position() - (Controller.Axis1.position() * 0.8)) * 0.8;
     int32_t leftMotor = (Controller.Axis3.position() + (Controller.Axis1.position() * 0.8)) * 0.8;
     
-    if (rightMotor == 0 && leftMotor == 0){
-      currentLeft = 0;
-      currentRight = 0;
-    } else {
-      accelerator(rightMotor, leftMotor, currentRight, currentLeft);
-    }
+    
+    accelerator(rightMotor, leftMotor, currentRight, currentLeft);
     leftDrive.spin(forward, currentLeft, pct);
     rightDrive.spin(forward, currentRight, pct);
     output1.spin(forward);
