@@ -44,6 +44,8 @@ controller Controller = controller();
 bool descorer = false;
 bool matchLoader = false;
 
+int currentRight, currentLeft;
+
 //-------------------------------------------------------HELPER METHODS--------------------------------------------------------------------------
 
 //function for turning with inertial sensor
@@ -137,8 +139,30 @@ void autonLeft(){
 }
 
 //drives forward three inches
-void autonNothing(){
+void autonNothing() {
   drive.driveFor(forward, 3, inches);
+}
+
+void autonSkills(){
+  //code for skills goes here
+}
+
+void accelerator(int RightMotor, int LeftMotor) {
+  if (abs(RightMotor - currentRight) < 1){
+    currentRight = RightMotor;
+  } else if (RightMotor > currentRight) {
+    currentRight += 0.5;
+  } else if (RightMotor < currentRight) {
+    currentRight -= 0.5;
+  }
+  if (abs(LeftMotor - currentLeft) < 1){
+    currentLeft = LeftMotor;
+  } else if (LeftMotor > currentLeft) {
+    currentLeft += 0.5;
+  } else if (LeftMotor < currentLeft) {
+    currentLeft -= 0.5;
+  }
+  
 }
 
 //--------------------------------------------------------COMPETITION CODE-----------------------------------------------------------------
@@ -174,7 +198,7 @@ void autonomous(void) {
   output1.setVelocity(27.5, pct);
   output2.setVelocity(27.5, pct);
   output3.setVelocity(27.5, pct);
-  autonRight();
+  autonNothing();
 }
 
 void usercontrol(void) {
@@ -184,15 +208,16 @@ void usercontrol(void) {
   output1.setVelocity(0, pct);
   output2.setVelocity(0, pct);
   output3.setVelocity(0, pct);
-
+  currentLeft, currentRight = 0, 0;
+  int8_t counter = 0;
   while (1) {
     //code for the drivetrain
-    int32_t rightMotor = (Controller.Axis3.position() - (Controller.Axis1.position() * 0.8)) * 0.6;
-    int32_t leftMotor = (Controller.Axis3.position() + (Controller.Axis1.position() * 0.8)) * 0.6;
+    int32_t rightMotor = (Controller.Axis3.position() - (Controller.Axis1.position() * 0.8)) * 0.8;
+    int32_t leftMotor = (Controller.Axis3.position() + (Controller.Axis1.position() * 0.8)) * 0.8;
+    
 
-    rightDrive.spin(forward, rightMotor, pct);
-    leftDrive.spin(forward, leftMotor, pct);
-
+    accelerator(rightMotor, leftMotor);
+    counter++;
     output1.spin(forward);
     output2.spin(forward);
     output3.spin(forward);
