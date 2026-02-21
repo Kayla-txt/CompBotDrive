@@ -198,25 +198,29 @@ void autonomous(void) {
   output1.setVelocity(27.5, pct);
   output2.setVelocity(27.5, pct);
   output3.setVelocity(27.5, pct);
-  autonLeft();
+  autonRight();
 }
 
 void usercontrol(void) {
 
-  digout.set(false);
+  digout.set(true);
   
   output1.setVelocity(0, pct);
   output2.setVelocity(0, pct);
   output3.setVelocity(0, pct);
-  currentLeft, currentRight = 0, 0;
-  int8_t counter = 0;
+  currentLeft = 0;
+  currentRight = 0;
   while (1) {
     //code for the drivetrain
     int32_t rightMotor = (Controller.Axis3.position() - (Controller.Axis1.position() * 0.8)) * 0.8;
     int32_t leftMotor = (Controller.Axis3.position() + (Controller.Axis1.position() * 0.8)) * 0.8;
     
-
-    accelerator(rightMotor, leftMotor, currentRight, currentLeft);
+    if (rightMotor == 0 && leftMotor == 0){
+      currentLeft = 0;
+      currentRight = 0;
+    } else {
+      accelerator(rightMotor, leftMotor, currentRight, currentLeft);
+    }
     leftDrive.spin(forward, currentLeft, pct);
     rightDrive.spin(forward, currentRight, pct);
     output1.spin(forward);
@@ -235,7 +239,7 @@ void usercontrol(void) {
       output3.setVelocity(100, pct);
     //scores in bottom goal
     } else if(Controller.ButtonL2.pressing()){
-      output1.setVelocity(-100, pct);
+      output1.setVelocity(-80, pct);
       output2.setVelocity(-100, pct);
       output3.setVelocity(-100, pct);
     } else if(Controller.ButtonL1.pressing()){
