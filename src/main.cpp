@@ -34,7 +34,7 @@ motor output2 = motor(PORT7, false);
 motor output3 = motor(PORT4, true);
 
 //descorer
-pneumatics digout = pneumatics(Brain.ThreeWirePort.C);
+pneumatics digout = pneumatics(Brain.ThreeWirePort.A);
 
 pneumatics matchload = pneumatics(Brain.ThreeWirePort.B);
 
@@ -100,9 +100,9 @@ void autonRight(){
   drive.driveFor(forward, 7, inches);
 
   //scores scoring objects
-  output1.setVelocity(-50, pct);
-  output2.setVelocity(-50, pct);
-  output3.setVelocity(-50, pct);
+  output1.setVelocity(-100, pct);
+  output2.setVelocity(-100, pct);
+  output3.setVelocity(-100, pct);
   output1.spin(forward);
   output2.spin(forward);
   output3.spin(forward);
@@ -128,9 +128,9 @@ void autonLeft(){
 
   //scores scoring objects*
   //*disclaimer: has never actually worked
-  output1.setVelocity(50, pct);
-  output2.setVelocity(-50, pct);
-  output3.setVelocity(50, pct);
+  output1.setVelocity(100, pct);
+  output2.setVelocity(-100, pct);
+  output3.setVelocity(100, pct);
   output1.spin(forward);
   output2.spin(forward);
   output3.spin(forward);
@@ -187,8 +187,8 @@ void usercontrol(void) {
 
   while (1) {
     //code for the drivetrain
-    int32_t rightMotor = (Controller.Axis3.position() - (Controller.Axis1.position() * 0.8)) * 0.95;
-    int32_t leftMotor = (Controller.Axis3.position() + (Controller.Axis1.position() * 0.8)) * 0.95;
+    int32_t rightMotor = (Controller.Axis3.position() - (Controller.Axis1.position() * 0.8)) * 0.6;
+    int32_t leftMotor = (Controller.Axis3.position() + (Controller.Axis1.position() * 0.8)) * 0.6;
 
     rightDrive.spin(forward, rightMotor, pct);
     leftDrive.spin(forward, leftMotor, pct);
@@ -204,14 +204,14 @@ void usercontrol(void) {
       output3.setVelocity(100, pct);
     //scores in middle goal
     } else if(Controller.ButtonR1.pressing()){
-      output1.setVelocity(85, pct);
-      output2.setVelocity(-85, pct);
-      output3.setVelocity(85, pct);
+      output1.setVelocity(100   , pct);
+      output2.setVelocity(-100, pct);
+      output3.setVelocity(100, pct);
     //scores in bottom goal
     } else if(Controller.ButtonL2.pressing()){
-      output1.setVelocity(-80, pct);
-      output2.setVelocity(-80, pct);
-      output3.setVelocity(-80, pct);
+      output1.setVelocity(-100, pct);
+      output2.setVelocity(-100, pct);
+      output3.setVelocity(-100, pct);
     } else if(Controller.ButtonL1.pressing()){
       output1.setVelocity(50, pct);
       output2.setVelocity(0, pct);
