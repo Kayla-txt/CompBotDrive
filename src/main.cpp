@@ -45,7 +45,7 @@ bool descorer = false;
 bool matchLoader = false;
 
 int currentRight, currentLeft;
-
+int multiplier = 0.8;
 //-------------------------------------------------------HELPER METHODS--------------------------------------------------------------------------
 
 //function for turning with inertial sensor
@@ -162,9 +162,20 @@ void accelerator(int RightMotor, int LeftMotor, int &currentRight, int &currentL
   } else if (LeftMotor < currentLeft) {
     currentLeft -= 1;
   }
-  
 }
 
+float multiplierFinder(int leftMotor, int rightMotor) {
+  int absLeft  = abs(leftMotor);
+  int absRight = abs(rightMotor);
+  int maxMag = (absLeft > absRight) ? absLeft : absRight;
+  float scale;
+  if (maxMag > 100) {
+    scale = 1.0f / maxMag;
+  } else {
+    scale = 0.01f;
+  }
+  return scale;
+}
 //--------------------------------------------------------COMPETITION CODE-----------------------------------------------------------------
 
 //so far useless code for creating buttons
@@ -212,10 +223,21 @@ void usercontrol(void) {
   currentRight = 0;
   while (1) {
     //code for the drivetrain
-    int32_t rightMotor = (Controller.Axis3.position() - (Controller.Axis1.position() * 0.8)) * 0.8;
-    int32_t leftMotor = (Controller.Axis3.position() + (Controller.Axis1.position() * 0.8)) * 0.8;
-    
-    
+    int forwardPower = Controller.Axis3.position();
+    int turnPower = Controller.Axis1.position() * 0.8;
+    int32_t rightMotor = (forwardPower - turnPower);
+    int32_t leftMotor = (forwardPower + turnPower);
+
+    float scale = multiplierFinder(leftMotor, rightMotor);
+    float scaledRight = rightMotor * scale;
+    float scaledLeft  = leftMotor  * scale;
+
+    float rightMotorCurve = scaledRight * fabs(scaledRight);
+    float leftMotorCurve  = scaledLeft  * fabs(scaledLeft);
+
+    rightMotor = static_cast<int>(rightMotorCurve * 100 * multiplier);
+    leftMotor  = static_cast<int>(leftMotorCurve  * 100 * multiplier);
+
     accelerator(rightMotor, leftMotor, currentRight, currentLeft);
     leftDrive.spin(forward, currentLeft, pct);
     rightDrive.spin(forward, currentRight, pct);
