@@ -238,7 +238,7 @@ void usercontrol(void) {
     float leftMotorCurve  = (scaledLeft  * fabs(scaledLeft)) * 100;
 
 
-    accelerator(rightMotorCurve, leftMotorCurve, currentRight, currentLeft);
+    accelerator(rightMotorCurve * multiplier, leftMotorCurve * multiplier, currentRight, currentLeft);
 
     leftDrive.spin(forward, currentLeft, pct);
     rightDrive.spin(forward, currentRight, pct);
